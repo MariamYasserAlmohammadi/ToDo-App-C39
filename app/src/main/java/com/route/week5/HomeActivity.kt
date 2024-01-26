@@ -10,7 +10,7 @@ import com.route.week5.database.dao.MyDataBase
 // 3.support database migration paths
 // DAO -> data access object
 
-class MainActivity : AppCompatActivity() {
+class HomeActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
