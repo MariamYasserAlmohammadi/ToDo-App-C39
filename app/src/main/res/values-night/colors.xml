@@ -1,5 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="bg_color">#060E1E</color>
+    <color name="bottom_nav_bg_color">@color/black_blue_light</color>
+    <color name="activity_bg_color">@color/black_blue</color>
+    <color name="appbar_text_color">@color/black_blue</color>
+    <color name="task_bg_color">@color/black_blue_light</color>
+    <color name="description_text_color">@color/white</color>
+
 
 </resources>

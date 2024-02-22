@@ -2,6 +2,8 @@ plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
     id("kotlin-kapt")
+    id( "kotlin-parcelize")
+
 }
 
 android {
@@ -35,6 +37,9 @@ android {
     kotlinOptions {
         jvmTarget =  "17"
     }
+    buildFeatures {
+        viewBinding = true
+    }
 
 
 
@@ -52,6 +57,15 @@ dependencies {
     val room_version ="2.6.1"
     implementation ("androidx.room:room-runtime:$room_version")
     kapt("androidx.room:room-compiler:$room_version")
+
+
+    //LeakCanary
+    debugImplementation ("com.squareup.leakcanary:leakcanary-android:2.12")
+    //calendar
+    implementation ("com.github.prolificinteractive:material-calendarview:2.0.0")
+    //swipe to delete library
+    implementation ("com.github.zerobranch:SwipeLayout:1.3.1")
+
     testImplementation("junit:junit:4.13.2")
     androidTestImplementation("androidx.test.ext:junit:1.1.5")
     androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")

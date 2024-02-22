@@ -16,7 +16,8 @@ interface TaskDao{
     fun deleteTask(task: Task)
     @Query("select * from task")
     fun getAllTasks():List<Task>
-    @Query("select * from task where dateTime = :dateTime")
-    fun gitTasksByDate(dateTime:Long):List<Task>
+    // auto complete in hard coded string
+    @Query("select * from task where date = :date order by time ASC ")
+    fun getTasksByDate(date:Long):List<Task>
 
 }

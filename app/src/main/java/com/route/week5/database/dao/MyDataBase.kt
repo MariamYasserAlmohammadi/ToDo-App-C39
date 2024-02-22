@@ -6,34 +6,32 @@ import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import com.route.week5.database.modal.Task
-
-// views , create virtual table take its data from more than one place
-// autoMigrations , how to migrate tables
-// exportSchema = true , take schema of database SQL  put it in file and then put it in project to make project more quicker
-// version =1 , every edit in schema (structure of database) should upgrade version
-@Database(entities = [Task::class], version = 1, exportSchema = true)
+// 1.views , create virtual table take its data from more than one place
+// 2.autoMigrations , how to migrate tables
+// 3.exportSchema = true , take schema of database SQL  put it in file and then put it in project
+// to make project more quicker  (to quick generation of data base)
+// 4.version =1 , every edit in schema (structure of database) should upgrade version
+@Database(entities = [Task::class], version = 2, exportSchema = true)
 abstract class MyDataBase : RoomDatabase() {
     // return Dao
     abstract fun getTasksDao(): TaskDao
 
     // creation of object is time consuming
-    companion object {   // static
-        // only one object
+    companion object { // static
         private const val DATABASE_NAME = "tasks_database"
         private var database: MyDataBase? = null
+        // fun create database
+        fun init(context:Context){
 
-        // App context not Activity context because object is alive will lifecycle of App
-        fun init(app: Application) {
             if (database == null) {
-                //create database
-                // design pattern call context
+                // create object from database
                 database = Room.databaseBuilder(
-                    app.applicationContext,
-                    //database class name
+                    context.applicationContext,
+                    // class name of dataBase
                     MyDataBase::class.java,
-                    DATABASE_NAME,
+                    // name of dataBase
+                    DATABASE_NAME
                 )
-
                     .addMigrations()
                     // data form can change(change in schema)
                     // developer should provide migration (add table -> how to add this table)
@@ -46,12 +44,13 @@ abstract class MyDataBase : RoomDatabase() {
                     // it(configurations) may exist or it may not exist
                     // design pattern made for create object with diff configuration
                     .build()
+
             }
         }
         fun getInstance(): MyDataBase {
             return database!!
-
         }
+
     }
 
 }
