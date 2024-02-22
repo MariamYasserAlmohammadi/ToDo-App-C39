@@ -16,19 +16,17 @@ import com.route.week5.ui.getTimeOnly
 import java.util.Calendar
 
 class EditTaskActivity :AppCompatActivity() {
-    lateinit var binding: ActivityTaskDetailsBinding
+    lateinit var ViewBinding: ActivityTaskDetailsBinding
     private lateinit var taskObj:Task
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = ActivityTaskDetailsBinding.inflate(layoutInflater)
-        setContentView(binding.root)
+        ViewBinding = ActivityTaskDetailsBinding.inflate(layoutInflater)
+        setContentView(ViewBinding.root)
         getPassedTask()
         bindTask(taskObj)
         setUpViews()
-        binding.content.btnSaveTask.setOnClickListener {
-            saveTaskBtn()
-        }
+
 
     }
     override fun onResume() {
@@ -53,12 +51,16 @@ class EditTaskActivity :AppCompatActivity() {
 
     }
     fun setUpViews(){
-        binding.content.selectDateTil.setOnClickListener {
+        ViewBinding.content.selectDateTil.setOnClickListener {
             showDatePicker()
         }
-        binding.content.selectTimeTil.setOnClickListener {
+        ViewBinding.content.selectTimeTil.setOnClickListener {
             showTimePicker()
         }
+        ViewBinding.content.btnSaveTask.setOnClickListener {
+            saveTaskBtn()
+        }
+
 
     }
     val calendar = Calendar.getInstance()
@@ -69,8 +71,7 @@ class EditTaskActivity :AppCompatActivity() {
             { dialog , hourOfDay, minute ->
                 calendar.set(Calendar.HOUR_OF_DAY,hourOfDay)
                 calendar.set(Calendar.MINUTE,minute)
-                binding.content.selectTimeTv.text =calendar.formatTime()
-                binding.content.selectDateTil.error=null
+                ViewBinding.content.selectTimeTv.text =calendar.formatTime()
                 //"${hourOfDay}:${minute}"
             },
             // default time  when open picker
@@ -97,19 +98,18 @@ class EditTaskActivity :AppCompatActivity() {
             calendar.set(Calendar.MONTH,month)
 
             // format
-            binding.content.selectDateTv.text = calendar.formatDate();
-            binding.content.selectDateTil.error=null
+            ViewBinding.content.selectDateTv.text = calendar.formatDate()
             //"$year/${month+1}/$dayOfMonth"
         }
         datePicker.show()
 
     }
     private fun bindTask(task:Task){
-        binding.content.title.setText( task.title.toString())
-        binding.content.description.setText(task.content.toString())
-        binding.content.selectDateTv.text = task.date.toString()
-        binding.content.selectTimeTv.text = task.time.toString()
-        binding.content.checkboxIsDone.isChecked =task.isDone
+        ViewBinding.content.title.setText( task.title.toString())
+        ViewBinding.content.description.setText(task.content.toString())
+        ViewBinding.content.selectDateTv.text = task.date.toString()
+        ViewBinding.content.selectTimeTv.text = task.time.toString()
+        ViewBinding.content.checkboxIsDone.isChecked =task.isDone
 
     }
     private fun saveTaskBtn(){
@@ -118,9 +118,9 @@ class EditTaskActivity :AppCompatActivity() {
             .getTasksDao()
             .updateTask( Task(
                 id= taskObj.id ,
-                title = binding.title.text.toString(),
-                content = binding.content.description.text.toString(),
-                isDone = binding.content.checkboxIsDone.isChecked,
+                title = ViewBinding.content.title.text.toString(),
+                content = ViewBinding.content.description.text.toString(),
+                isDone = ViewBinding.content.checkboxIsDone.isChecked,
                 date = calendar.getDateOnly(),
                 time = calendar.getTimeOnly(),
             ))

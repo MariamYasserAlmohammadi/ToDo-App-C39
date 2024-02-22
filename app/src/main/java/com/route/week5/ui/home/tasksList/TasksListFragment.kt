@@ -12,6 +12,7 @@ import com.route.week5.database.dao.MyDataBase
 import com.route.week5.database.modal.Constants
 import com.route.week5.database.modal.Task
 import com.route.week5.databinding.FragmentTasksBinding
+import com.route.week5.ui.MainActivity
 import com.route.week5.ui.getDateOnly
 import com.route.week5.ui.home.editTask.EditTaskActivity
 import java.util.Calendar
@@ -112,6 +113,6 @@ class TasksListFragment:Fragment (){
         intent.putExtra(Constants.PASSED_TASK, task)
         intent.putExtra(Constants.PASSED_TASK,position)
         startActivity(intent)
-        (activity as Activity?)!!.overridePendingTransition(0, 0)
+      //  (activity as Activity?)!!.overridePendingTransition(0, 0)
     }
 }
