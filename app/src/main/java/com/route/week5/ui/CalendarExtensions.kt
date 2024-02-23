@@ -19,7 +19,8 @@ import java.util.Calendar
     // extension fun
     fun Calendar.formatTime():String{
         // this is pointer on object
-        val format = SimpleDateFormat("hh,mm a")
+        // a -> am 12hour  -24
+        val format = SimpleDateFormat("hh:mm a")
         return format.format(time)
     }
     fun Calendar.formatDate():String{

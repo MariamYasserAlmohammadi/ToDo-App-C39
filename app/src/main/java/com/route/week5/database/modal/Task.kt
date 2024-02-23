@@ -1,11 +1,13 @@
 package com.route.week5.database.modal
 
+
 import android.os.Parcelable
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.Ignore
 import androidx.room.PrimaryKey
 import kotlinx.parcelize.Parcelize
+
 
 // Class is table
 @Parcelize
@@ -23,4 +25,4 @@ data class Task (
     var date:Long?=null,
     @ColumnInfo
     var time:Long?=null,
-):Parcelable
+): Parcelable

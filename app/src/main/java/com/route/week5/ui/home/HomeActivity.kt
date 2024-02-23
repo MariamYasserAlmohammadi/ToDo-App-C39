@@ -9,7 +9,7 @@ import com.route.week5.databinding.ActivityHomeBinding
 import com.route.week5.ui.home.adddTask.AddTaskBottomSheet
 import com.route.week5.ui.home.settings.SettingsFragment
 import com.route.week5.ui.home.tasksList.TasksListFragment
-
+//
 // Room persistence library provide an abstraction layer over SQL
 // 1.Compile time verification of SQL queries
 // 2.KAPT Kotlin Annotations Processor , @...
@@ -41,13 +41,16 @@ class HomeActivity : AppCompatActivity() {
     }
     // initiate views
     private fun setUpViews() {
+
         binding.bottomNavigation.setOnItemSelectedListener { item ->
             if (item.itemId == R.id.navigation_tasks) {
                 showFragment(TasksListFragment())
-            } else {
+            } else if(item.itemId ==R.id.navigation_settings){
                 showFragment(SettingsFragment())
             }
-            return@setOnItemSelectedListener true
+          return@setOnItemSelectedListener true
+
+
         }
         binding.bottomNavigation.selectedItemId = R.id.navigation_tasks
         binding.fabAddTask.setOnClickListener {
@@ -59,6 +62,7 @@ class HomeActivity : AppCompatActivity() {
         supportFragmentManager
             .beginTransaction()
             .replace(R.id.fragment_container, fragment)
+            .addToBackStack("")
             .commit()
     }
 

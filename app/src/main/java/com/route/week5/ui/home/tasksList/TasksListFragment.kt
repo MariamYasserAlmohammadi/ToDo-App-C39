@@ -1,8 +1,8 @@
 package com.route.week5.ui.home.tasksList
 
-import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
+
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -12,8 +12,8 @@ import com.route.week5.database.dao.MyDataBase
 import com.route.week5.database.modal.Constants
 import com.route.week5.database.modal.Task
 import com.route.week5.databinding.FragmentTasksBinding
-import com.route.week5.ui.MainActivity
 import com.route.week5.ui.getDateOnly
+
 import com.route.week5.ui.home.editTask.EditTaskActivity
 import java.util.Calendar
 
@@ -26,15 +26,17 @@ import java.util.Calendar
 // :Serializable
 // content provider akter comp need serialization
 
-class TasksListFragment:Fragment (){
+class TasksListFragment : Fragment() {
     lateinit var binding: FragmentTasksBinding
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        binding =FragmentTasksBinding.inflate(inflater,
-            container,false)
+        binding = FragmentTasksBinding.inflate(
+            inflater,
+            container, false
+        )
         return binding.root
     }
 
@@ -48,24 +50,24 @@ class TasksListFragment:Fragment (){
         super.onResume()
         retrieveTasksList()
     }
-    val adapter =TasksAdapter()
-    val currentDate = Calendar.getInstance()
-    lateinit var allTasks :MutableList<Task>
-     fun retrieveTasksList() {
 
-       allTasks = MyDataBase.getInstance()
-          .getTasksDao().getTasksByDate( currentDate.getDateOnly()).toMutableList()
+    val adapter = TasksAdapter()
+    val currentDate = Calendar.getInstance()
+    lateinit var allTasks: MutableList<Task>
+    fun retrieveTasksList() {
+        allTasks = MyDataBase.getInstance()
+            .getTasksDao()
+            .getTasksByDate(currentDate.getDateOnly())
+            .toMutableList()
 
         this.adapter.changeData(allTasks)
     }
 
-
-
     private fun setUpViews() {
         binding.rvTasks.adapter = adapter
 
-
-        binding.calendarView.setOnDateChangedListener { calendarView, date, selected ->
+        binding.calendarView.setOnDateChangedListener {
+                calendarView, date, selected ->
             if (selected) {
                 // calendar start month from 0
                 currentDate.set(date.year, date.month - 1, date.day)
@@ -74,15 +76,17 @@ class TasksListFragment:Fragment (){
         }
         // opening day
         binding.calendarView.selectedDate = CalendarDay.today()
-        adapter.onDeleteClickListener =TasksAdapter.OnDeleteClickListener{
-            task,position ->
+        adapter.onDeleteClickListener = TasksAdapter.OnDeleteClickListener { task, position ->
             MyDataBase.getInstance()
-                    .getTasksDao().deleteTask(task)
-                allTasks!!.remove(task)
-                retrieveTasksList()
+                .getTasksDao().deleteTask(task)
+            allTasks!!.remove(task)
+            retrieveTasksList()
         }
-        adapter.onTaskItemClickListener = TasksAdapter.OnTaskItemClickListener { task, position ->
-            openEditTaskActivity(task, position)
+        adapter.onTaskItemClickListener = TasksAdapter.OnTaskItemClickListener { task ->
+
+            val intent = Intent(context, EditTaskActivity::class.java)
+            intent.putExtra(Constants.PASSED_TASK, task)
+            startActivity(intent)
         }
     }
 //            val fragment =EditTaskActivity()
@@ -108,11 +112,7 @@ class TasksListFragment:Fragment (){
 //        }
 
 
-    private fun openEditTaskActivity(task: Task,position :Int) {
-        val intent = Intent(activity, EditTaskActivity::class.java)
-        intent.putExtra(Constants.PASSED_TASK, task)
-        intent.putExtra(Constants.PASSED_TASK,position)
-        startActivity(intent)
-      //  (activity as Activity?)!!.overridePendingTransition(0, 0)
+    private fun openEditTaskActivity(task: Task) {
+
     }
 }

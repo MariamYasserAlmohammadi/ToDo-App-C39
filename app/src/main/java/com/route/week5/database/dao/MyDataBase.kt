@@ -17,7 +17,7 @@ abstract class MyDataBase : RoomDatabase() {
     abstract fun getTasksDao(): TaskDao
 
     // creation of object is time consuming
-    companion object { // static
+    companion object { //  static اي حاجه بعرفها هنا
         private const val DATABASE_NAME = "tasks_database"
         private var database: MyDataBase? = null
         // fun create database
@@ -32,21 +32,26 @@ abstract class MyDataBase : RoomDatabase() {
                     // name of dataBase
                     DATABASE_NAME
                 )
+                    // in case you have migrations add migrations
+                    // if not delete old database and add new one
+                    // (auto migrations , manual migrations)
                     .addMigrations()
                     // data form can change(change in schema)
                     // developer should provide migration (add table -> how to add this table)
                     .fallbackToDestructiveMigration()
+                    // database is IO operations
                     // UIThread (user interface thread)
                     // ANR App Not Responding
-                    // make operations on data base in back ground thread
+                    // make operations on database in back ground thread
                     .allowMainThreadQueries()
-                    // build object
+                    // builder -> build object with diff configurations
                     // it(configurations) may exist or it may not exist
                     // design pattern made for create object with diff configuration
                     .build()
 
             }
         }
+       // not use getInstance before using init inMYApplication class
         fun getInstance(): MyDataBase {
             return database!!
         }

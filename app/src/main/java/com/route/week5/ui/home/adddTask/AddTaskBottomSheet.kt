@@ -18,7 +18,7 @@ import com.route.week5.ui.showDialog
 import java.text.SimpleDateFormat
 import java.util.Calendar
 
-class AddTaskBottomSheet :BottomSheetDialogFragment (){
+class AddTaskBottomSheet : BottomSheetDialogFragment() {
     lateinit var binding: FragmentAddTaskBinding
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -26,10 +26,11 @@ class AddTaskBottomSheet :BottomSheetDialogFragment (){
         savedInstanceState: Bundle?
     ): View? {
         binding = FragmentAddTaskBinding.inflate(
-            inflater ,
+            inflater,
             container,
-            false)
-        return  binding.root
+            false
+        )
+        return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -41,7 +42,7 @@ class AddTaskBottomSheet :BottomSheetDialogFragment (){
     }
 
     private fun setUpViews() {
-        binding.selectDateTil.setOnClickListener{
+        binding.selectDateTil.setOnClickListener {
             showDatePicker()
 
         }
@@ -51,98 +52,93 @@ class AddTaskBottomSheet :BottomSheetDialogFragment (){
         }
 
     }
+
     // to deal with date and time
     // object from calender have ( date ) day and month and year now
     val calendar = Calendar.getInstance()
     private fun showTimePicker() {
-        val timePicker =TimePickerDialog(
+        val timePicker = TimePickerDialog(
             requireContext(),
             // Listener
-            { dialog , hourOfDay, minute ->
-                calendar.set(Calendar.HOUR_OF_DAY,hourOfDay)
-                calendar.set(Calendar.MINUTE,minute)
-                binding.selectTimeTv.text =calendar.formatTime()
-                binding.selectDateTil.error=null
-                    //"${hourOfDay}:${minute}"
+            { dialog, hours, minutes ->
+                calendar.set(Calendar.HOUR_OF_DAY, hours)
+                calendar.set(Calendar.MINUTE, minutes)
+                binding.selectTimeTv.text = calendar.formatTime()
+                binding.selectDateTil.error = null
+                //"${hourOfDay}:${minute}"
             },
             // default time  when open picker
             // to read from calendar
             calendar.get(Calendar.HOUR_OF_DAY),
             calendar.get(Calendar.MINUTE),
-            false)
+            false
+        )
         timePicker.show()
     }
 
     private fun showDatePicker() {
         // no builder then it may have constructor
         val datePicker = DatePickerDialog(requireContext())
-
 //        datePicker.setOnDateSetListener(DatePickerDialog.OnDateSetListener {
 //                view, year, month, dayOfMonth ->  })
-
         datePicker.setOnDateSetListener {
                 dialog, year, month, dayOfMonth ->
             // set to change calendar field (year , day , month)
             //calender.set(field,value)
-            calendar.set(Calendar.DAY_OF_YEAR,year)
-            calendar.set(Calendar.DAY_OF_MONTH,dayOfMonth)
-            calendar.set(Calendar.MONTH,month)
+            calendar.set(Calendar.YEAR, year)
+            calendar.set(Calendar.DAY_OF_MONTH, dayOfMonth)
+            calendar.set(Calendar.MONTH, month)
 
             // format
-            binding.selectDateTv.text = calendar.formatDate();
-            binding.selectDateTil.error=null
-                //"$year/${month+1}/$dayOfMonth"
+            binding.selectDateTv.text = calendar.formatDate()
+            binding.selectDateTil.error = null
+            //"$year/${month+1}/$dayOfMonth"
         }
         datePicker.show()
 
     }
 
-var  onTaskAddedListener :OnTaskAddedListener?=null
-    fun interface OnTaskAddedListener{
+    var onTaskAddedListener: OnTaskAddedListener? = null
+    fun interface OnTaskAddedListener {
         fun onTaskAdded()
     }
-
-
     private fun isValidTaskInput(): Boolean {
-        var isValid =true
+        var isValid = true
 
         val title = binding.title.text.toString()
-        val description =binding.description.text.toString()
+        val description = binding.description.text.toString()
 
-        if (title.isBlank()){  // blank first trim then check
-            binding.titleTil.error ="Please enter Task Title"
+        if (title.isBlank()) {  // blank -> first trim then check
+            binding.titleTil.error = "Please enter Task Title"
             // not valid
             isValid = false
+        } else {
+            binding.titleTil.error = null
+            isValid = true
         }
-        else{
-            binding.titleTil.error=null
-            isValid =true
-        }
-        if (description.isBlank()){
-            binding.descriptionTil.error ="Please enter Task description"
+        if (description.isBlank()) {
+            binding.descriptionTil.error = "Please enter Task description"
             // not valid
             isValid = false
 
+        } else {
+            binding.descriptionTil.error = null
+            isValid = true
         }
-        else{
-            binding.descriptionTil.error=null
-            isValid =true
+        if (binding.selectTimeTv.text.isBlank()) {
+            binding.selectTimeTil.error = "Please select time"
+            isValid = false
         }
-        if (binding.selectTimeTv.text.isBlank()){
-            binding.selectTimeTil.error="Please select time"
-            isValid=false
-        }
-        if (binding.selectDateTv.text.isBlank()){
-            binding.selectDateTil.error="Please select time"
-            isValid=false
+        if (binding.selectDateTv.text.isBlank()) {
+            binding.selectDateTil.error = "Please select time"
+            isValid = false
         }
         return isValid
 
     }
-
     private fun addTask() {
         // 1.validate
-        if (!isValidTaskInput()){
+        if (!isValidTaskInput()) {
             return
         }
         MyDataBase.getInstance()
@@ -150,16 +146,19 @@ var  onTaskAddedListener :OnTaskAddedListener?=null
                 Task(
                     title = binding.title.text.toString(),
                     content = binding.description.text.toString(),
-                    date =calendar.getDateOnly() ,
-                    time =calendar.getTimeOnly() )
+                    date = calendar.getDateOnly(),
+                    time = calendar.getTimeOnly()
+                )
             )
-        showDialog("Task Added successfully",posActionName = "ok",
+        showDialog(
+            "Task Added successfully", posActionName = "ok",
             posActionCallBack = {
                 // disappear bottom sheet
                 dismiss()
                 onTaskAddedListener?.onTaskAdded()
             },
-            isCancelable = false)
+            isCancelable = false
+        )
 
 
     }

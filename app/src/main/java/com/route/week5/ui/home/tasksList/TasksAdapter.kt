@@ -29,7 +29,7 @@ class TasksAdapter (var tasksList:MutableList<Task>?=null):RecyclerView.Adapter<
         holder.bin(taskItem)
         onTaskItemClickListener?.let {
             holder.itemBinding.dragItem.setOnClickListener {
-                onTaskItemClickListener?.onTaskItemClicked(taskItem,position)
+                onTaskItemClickListener?.onTaskItemClicked(taskItem)
             }
             onDeleteClickListener?.let {
                 holder.itemBinding.leftItem.setOnClickListener{
@@ -57,13 +57,14 @@ class TasksAdapter (var tasksList:MutableList<Task>?=null):RecyclerView.Adapter<
         // effect on performance
         notifyDataSetChanged()
     }
-     var onTaskItemClickListener : OnTaskItemClickListener?=null
+    var onTaskItemClickListener : OnTaskItemClickListener?=null
     var onDeleteClickListener : OnDeleteClickListener?=null
+
 //    fun setOnTaskClickListener(listener: OnTaskItemClickListener){
 //        onTaskItemClickListener = listener
 //    }
     fun interface OnTaskItemClickListener{
-        fun onTaskItemClicked(item:Task,position: Int)
+        fun onTaskItemClicked(item:Task)
     }
     fun interface OnDeleteClickListener{
         fun onDeleteClicked(item:Task,position: Int)

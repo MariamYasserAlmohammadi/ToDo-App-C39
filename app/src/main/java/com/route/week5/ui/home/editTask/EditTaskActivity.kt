@@ -2,9 +2,11 @@ package com.route.week5.ui.home.editTask
 
 import android.app.DatePickerDialog
 import android.app.TimePickerDialog
+import android.content.Intent
 import android.os.Build
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
+import androidx.fragment.app.Fragment
 import com.route.week5.database.dao.MyDataBase
 import com.route.week5.database.modal.Constants
 import com.route.week5.database.modal.Task
@@ -13,11 +15,13 @@ import com.route.week5.ui.formatDate
 import com.route.week5.ui.formatTime
 import com.route.week5.ui.getDateOnly
 import com.route.week5.ui.getTimeOnly
+import com.route.week5.ui.home.HomeActivity
+import com.route.week5.ui.showDialog
 import java.util.Calendar
 
 class EditTaskActivity :AppCompatActivity() {
     lateinit var ViewBinding: ActivityTaskDetailsBinding
-    private lateinit var taskObj:Task
+    private  var taskObj:Task?=null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -27,10 +31,6 @@ class EditTaskActivity :AppCompatActivity() {
         bindTask(taskObj)
         setUpViews()
 
-
-    }
-    override fun onResume() {
-        super.onResume()
 
     }
     fun getPassedTask() {
@@ -104,12 +104,12 @@ class EditTaskActivity :AppCompatActivity() {
         datePicker.show()
 
     }
-    private fun bindTask(task:Task){
-        ViewBinding.content.title.setText( task.title.toString())
-        ViewBinding.content.description.setText(task.content.toString())
-        ViewBinding.content.selectDateTv.text = task.date.toString()
-        ViewBinding.content.selectTimeTv.text = task.time.toString()
-        ViewBinding.content.checkboxIsDone.isChecked =task.isDone
+    private fun bindTask(task:Task?){
+        ViewBinding.content.title.setText( task?.title.toString())
+        ViewBinding.content.description.setText(task?.content.toString())
+        ViewBinding.content.selectDateTv.text = task?.date.toString()
+        ViewBinding.content.selectTimeTv.text = task?.time.toString()
+        ViewBinding.content.checkboxIsDone.isChecked =task?.isDone ?: false
 
     }
     private fun saveTaskBtn(){
@@ -117,13 +117,17 @@ class EditTaskActivity :AppCompatActivity() {
             .getInstance()
             .getTasksDao()
             .updateTask( Task(
-                id= taskObj.id ,
+                id= taskObj?.id ,
                 title = ViewBinding.content.title.text.toString(),
                 content = ViewBinding.content.description.text.toString(),
                 isDone = ViewBinding.content.checkboxIsDone.isChecked,
                 date = calendar.getDateOnly(),
                 time = calendar.getTimeOnly(),
             ))
+        val intent = Intent(this , HomeActivity::class.java)
+        startActivity(intent)
+
+
 
     }
 
