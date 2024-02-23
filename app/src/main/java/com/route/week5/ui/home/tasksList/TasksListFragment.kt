@@ -76,7 +76,8 @@ class TasksListFragment : Fragment() {
         }
         // opening day
         binding.calendarView.selectedDate = CalendarDay.today()
-        adapter.onDeleteClickListener = TasksAdapter.OnDeleteClickListener { task, position ->
+        adapter.onDeleteClickListener = TasksAdapter.OnDeleteClickListener {
+                task, position ->
             MyDataBase.getInstance()
                 .getTasksDao().deleteTask(task)
             allTasks!!.remove(task)
@@ -112,7 +113,4 @@ class TasksListFragment : Fragment() {
 //        }
 
 
-    private fun openEditTaskActivity(task: Task) {
-
-    }
 }

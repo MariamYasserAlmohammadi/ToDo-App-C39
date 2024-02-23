@@ -18,6 +18,7 @@ import com.route.week5.ui.getTimeOnly
 import com.route.week5.ui.home.HomeActivity
 import com.route.week5.ui.showDialog
 import java.util.Calendar
+import java.util.Date
 
 class EditTaskActivity :AppCompatActivity() {
     lateinit var ViewBinding: ActivityTaskDetailsBinding
@@ -104,11 +105,12 @@ class EditTaskActivity :AppCompatActivity() {
         datePicker.show()
 
     }
+
     private fun bindTask(task:Task?){
         ViewBinding.content.title.setText( task?.title.toString())
         ViewBinding.content.description.setText(task?.content.toString())
-        ViewBinding.content.selectDateTv.text = task?.date.toString()
-        ViewBinding.content.selectTimeTv.text = task?.time.toString()
+        ViewBinding.content.selectDateTv.text = task?.date?.getDateOnly()
+        ViewBinding.content.selectTimeTv.text = task?.time?.getTimeOnly()
         ViewBinding.content.checkboxIsDone.isChecked =task?.isDone ?: false
 
     }

@@ -2,8 +2,9 @@ package com.route.week5.ui
 
 import java.text.SimpleDateFormat
 import java.util.Calendar
+import java.util.Date
 
-    fun Calendar.getDateOnly(): Long{
+fun Calendar.getDateOnly(): Long{
         val calendar = Calendar.getInstance()
         calendar.set(get(Calendar.YEAR),get(Calendar.MONTH)
             ,get(Calendar.DATE),0,0,0)
@@ -27,3 +28,12 @@ import java.util.Calendar
         val format = SimpleDateFormat("dd/MM/yyyy")
         return format.format(time)
     }
+
+    fun Long.getDateOnly():String{
+    val formatter = SimpleDateFormat("dd/MM/yyyy")
+    return formatter.format(this)
+}
+fun Long.getTimeOnly():String{
+    val formatter =SimpleDateFormat("hh:mm a")
+    return formatter.format(this)
+}
